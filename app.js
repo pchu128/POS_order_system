@@ -35,31 +35,7 @@ AlphaPos.prototype.getCheckedValue = function (inputName) {
   })
   return selectedOption
 }
-
-// new the alphaPos Instance
-const alphaPos = new AlphaPos()
-
-// Add-order event listener
-const addDrinkButton = document.querySelector('[data-alpha-pos="add-drink"]')
-addDrinkButton.addEventListener('click', () => {
-  // 1. acquire selected options
-  const drinkName = alphaPos.getCheckedValue('drink')
-  const ice = alphaPos.getCheckedValue('ice')
-  const sugar = alphaPos.getCheckedValue('sugar')
-  // 2. alert if nothing is checked
-  if (!drinkName) {
-    alert('Please choose at least one item.')
-    return
-  }
-  // 3. new drink instance and get the price
-  const drink = new Drink(drinkName, sugar, ice)
-  console.log(drink)
-  console.log(drink.price())
-  // 4. generate order on the left side
-  alphaPos.addDrink(drink)
-})
-
-// Insert drink instance into order list
+  // Insert drink instance into order list
 const orderLists = document.querySelector('[data-order-lists]')
 AlphaPos.prototype.addDrink = function (drink) {
   let orderListsCard = `
@@ -79,8 +55,44 @@ AlphaPos.prototype.addDrink = function (drink) {
   `
   orderLists.insertAdjacentHTML('afterbegin', orderListsCard)
 }
+  // deleteDrink
+AlphaPos.prototype.deleteDrink = function (target) {
+  target.remove()
+}
 
+// new the alphaPos Instance
+const alphaPos = new AlphaPos()
 
+// Add-order event listener
+const addDrinkButton = document.querySelector('[data-alpha-pos="add-drink"]')
+addDrinkButton.addEventListener('click', () => {
+
+  // 1. acquire selected options
+  const drinkName = alphaPos.getCheckedValue('drink')
+  const ice = alphaPos.getCheckedValue('ice')
+  const sugar = alphaPos.getCheckedValue('sugar')
+
+  // 2. alert if nothing is checked
+  if (!drinkName) {
+    alert('Please choose at least one item.')
+    return
+  }
+
+  // 3. new drink instance and get the price
+  const drink = new Drink(drinkName, sugar, ice)
+
+  // 4. generate order on the left side
+  alphaPos.addDrink(drink)
+})
+
+// delete function
+orderLists.addEventListener('click', function(event) {
+  let isDeleteButton = event.target.matches('[data-alpha-pos="delete-drink"]')
+  if (!isDeleteButton) {
+    return
+  }
+  alphaPos.deleteDrink(event.target.parentElement.parentElement.parentElement)
+})
 
 // Acquire all chosen drinks, ice, and sugar
 let allDrinksOptions = document.querySelectorAll('input[name="drink"]')
