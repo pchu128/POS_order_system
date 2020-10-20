@@ -5,7 +5,6 @@ function Drink (name, sugar, ice) {
   this.ice = ice
 }
 
-// Price methods: get price according to the drink
 Drink.prototype.price = function() {
   switch (this.name) {
     case 'Black Tea':
@@ -35,7 +34,7 @@ AlphaPos.prototype.getCheckedValue = function (inputName) {
   })
   return selectedOption
 }
-  // Insert drink instance into order list
+
 const orderLists = document.querySelector('[data-order-lists]')
 AlphaPos.prototype.addDrink = function (drink) {
   let orderListsCard = `
@@ -55,15 +54,50 @@ AlphaPos.prototype.addDrink = function (drink) {
   `
   orderLists.insertAdjacentHTML('afterbegin', orderListsCard)
 }
-  // deleteDrink
+
 AlphaPos.prototype.deleteDrink = function (target) {
   target.remove()
 }
 
-// new the alphaPos Instance
+AlphaPos.prototype.checkout = function () {
+  let totalAmount = 0
+  document.querySelectorAll('[data-drink-price]').forEach(function(drink) {
+    totalAmount += Number(drink.textContent)
+  })
+  return totalAmount
+}
+
+AlphaPos.prototype.clearOrder = function (target) {
+  target.querySelectorAll('.card').forEach(function (card) {
+    card.remove()
+  })
+}
+
 const alphaPos = new AlphaPos()
 
-// Add-order event listener
+// Get all selected options
+let allDrinksOptions = document.querySelectorAll('input[name="drink"]')
+allDrinksOptions.forEach(function (option) {
+  if (option.checked) {
+    console.log(`${option.value}: ${option.checked}`)
+  }
+})
+
+let allIceOptions = document.querySelectorAll('input[name="ice"]')
+allIceOptions.forEach(function (option) {
+  if (option.checked) {
+    console.log(`${option.value}: ${option.checked}`)
+  }
+})
+
+let allSugarOptions = document.querySelectorAll('input[name="sugar"]')
+allSugarOptions.forEach(function (option) {
+  if (option.checked) {
+    console.log(`${option.value}: ${option.checked}`)
+  }
+})
+
+// feat: add order
 const addDrinkButton = document.querySelector('[data-alpha-pos="add-drink"]')
 addDrinkButton.addEventListener('click', () => {
 
@@ -85,7 +119,7 @@ addDrinkButton.addEventListener('click', () => {
   alphaPos.addDrink(drink)
 })
 
-// delete function
+// feat: delete
 orderLists.addEventListener('click', function(event) {
   let isDeleteButton = event.target.matches('[data-alpha-pos="delete-drink"]')
   if (!isDeleteButton) {
@@ -94,24 +128,9 @@ orderLists.addEventListener('click', function(event) {
   alphaPos.deleteDrink(event.target.parentElement.parentElement.parentElement)
 })
 
-// Acquire all chosen drinks, ice, and sugar
-let allDrinksOptions = document.querySelectorAll('input[name="drink"]')
-allDrinksOptions.forEach(function(option) {
-  if (option.checked) {
-    console.log(`${option.value}: ${option.checked}`)
-  }
-})
-
-let allIceOptions = document.querySelectorAll('input[name="ice"]')
-allIceOptions.forEach(function(option) {
-  if (option.checked) {
-    console.log(`${option.value}: ${option.checked}`)
-  }
-})
-
-let allSugarOptions = document.querySelectorAll('input[name="sugar"]')
-allSugarOptions.forEach(function (option) {
-  if (option.checked) {
-    console.log(`${option.value}: ${option.checked}`)
-  }
+// feat: checkout
+const checkoutButton = document.querySelector('[data-alpha-pos="checkout')
+checkoutButton.addEventListener('click', function() {
+  alert(`Total amount of drinks：$${alphaPos.checkout()}`)
+  alphaPos.clearOrder(orderLists)
 })

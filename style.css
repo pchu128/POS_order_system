@@ -14,17 +14,18 @@ body {
   background-size: cover;
 }
 
-.row {
-  max-height: 600px;
-}
-
 .container {
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 3px;
 }
 
+.row {
+  max-height: 600px;
+}
+
 .col-md-4 {
   overflow-y: auto;
+  max-height: 580px;
 }
 
 [data-alpha-pos="delete-drink"] {
